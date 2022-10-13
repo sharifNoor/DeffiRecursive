@@ -1,5 +1,6 @@
 mod deep_diffi;
 use serde_json::json;
+use deep_diffi::mod_deep_diffi::josn_diffi;
 
 fn main() {
 
@@ -13,7 +14,7 @@ fn main() {
             ],
             "key3": "value_2",
         },
-        "key4": "value_2",
+        "key4": [{"keyj4": "valuej_222","keyj5": "valuej_2"}, {"keyj42": "valuej_22","keyj52": "valuej_22","keyj62": "valuej_22"}],
     });
 
     let b_json = json!({
@@ -26,9 +27,9 @@ fn main() {
             ],
             "key3": "value_3",
         },
-        // "key4": "value_2",
+        "key4": [{"keyj4": "valuej_2","keyj5": "valuej_2"}, {"keyj42": "valuej_22","keyj52": "valuej_22"}],
     });
 
-    let o = deep_diffi::mod_deep_diffi::josn_diffi(a_json, b_json);
-    println!("===> {}", serde_json::to_string(&o).unwrap());
+    let o = josn_diffi(a_json, b_json);
+    // println!("===> {}", serde_json::to_string(&o).unwrap());
 }
