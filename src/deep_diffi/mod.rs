@@ -121,8 +121,8 @@ pub mod mod_deep_diffi {
                     deep_diffi(json!(json3), json!(json4), location.to_string());
                 } else if json1_value.is_array() {
                     if json2[json1_key].is_array() {
-                        let mut arr_1: &Value = &json!({"key": "val"});
-                        let mut arr_2: &Value = &json!({"key": "val"});
+                        // let mut arr_1: &Value = &json!({"key": "val"});
+                        // let mut arr_2: &Value = &json!({"key": "val"});
                         for json1_array_val in json1_value.as_array().unwrap().iter() {
                             if !json2[json1_key]
                                 .as_array()
@@ -141,7 +141,15 @@ pub mod mod_deep_diffi {
                                 let j1i = json1_value.as_array().unwrap().iter().position(|x| x == json1_array_val).unwrap();
 
 
-                                 arr_1 = json1_array_val;
+                                let location1 = String::from(&location) + "[" + &j1i.to_string() + "][";
+                                println!("location ==> {}", location1);
+                                let arr_1 = json1_array_val; 
+                                //  arr_2 = json2[json1_key][j1i];
+                                // println!("JSON-2 ===> {}", json2[json1_key][j1i]);
+                                // println!("JSON-1 ===> {}", arr_1);
+                                deep_diffi(json!(&arr_1), json!(&json2[json1_key][j1i]), location1.to_string());
+                                 
+
                                 // println!("JSON-1 ===> {} : {}[{}]", json1_array_val, location, j1i);
                             }
                         }
@@ -153,12 +161,6 @@ pub mod mod_deep_diffi {
                                 unsafe {
                                     ITERABLE_ITEM_ADDED.push(formatted);
                                 }
-                            }
-                            else if json2_array_val.is_object() {
-                                let j2i = json2[json1_key].as_array().unwrap().iter().position(|x| x == json2_array_val).unwrap();
-
-                                arr_2 = json2_array_val;
-                                // println!("JSON-2 ===> {} : {}[{}]", json2_array_val, location, j2i);
                             }
                         }
                     }
@@ -186,9 +188,5 @@ pub mod mod_deep_diffi {
                 }
             }
         }
-    }
-
-    fn array_checker (arr_1: Vec<Value>, arr_2: Vec<Value>) {
-
     }
 }

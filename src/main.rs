@@ -27,9 +27,9 @@ fn main() {
             ],
             "key3": "value_3",
         },
-        "key4": [{"keyj4": "valuej_2","keyj5": "valuej_2"}, {"keyj42": "valuej_22","keyj52": "valuej_22"}],
+        "key4": [{"keyj4": "valuej_2","keyj5": "valuej_2","keyj62": "valuej_22"}, {"keyj42": "valuej_22","keyj52": "valuej_22"}],
     });
 
     let o = josn_diffi(a_json, b_json);
-    // println!("===> {}", serde_json::to_string(&o).unwrap());
+    println!("===> {}", serde_json::to_string(&o).unwrap());
 }
