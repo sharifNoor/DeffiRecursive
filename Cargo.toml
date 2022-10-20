@@ -1,5 +1,5 @@
 [package]
-name = "DeffiRecursive"
+name = "deffi_recursive"
 version = "0.1.0"
 edition = "2021"
 
