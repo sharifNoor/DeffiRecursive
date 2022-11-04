@@ -37,7 +37,7 @@ fn main() {
                 "value_5",
                 "value_6",
             ],
-            "key3": "value_3",
+            
         },
         "key4": [
             {
@@ -53,6 +53,7 @@ fn main() {
         "key5": "value_2",
     });
 
-    let o = josn_diffi(a_json, b_json, true);
-    println!("===> {}", serde_json::to_string(&o).unwrap());
+    let o = josn_diffi(a_json, b_json, false);
+    println!("===> {:#?}", o);
+
 }
