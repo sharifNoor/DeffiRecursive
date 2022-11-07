@@ -37,7 +37,6 @@ fn main() {
                 "value_5",
                 "value_6",
             ],
-            
         },
         "key4": [
             {
