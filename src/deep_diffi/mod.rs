@@ -26,28 +26,22 @@ pub mod mod_deep_diffi {
     }
 
     pub fn josn_diffi(a_json: serde_json::Value, b_json: serde_json::Value, order: bool) -> Result {
+       
+        let init_result: Result = Result {
+            dictionary_item_removed: Vec::<serde_json::Value>::new(),
+            dictionary_item_added: Vec::<serde_json::Value>::new(),
+            value_changed: Vec::<serde_json::Value>::new(),
+            iterable_item_added: Vec::<serde_json::Value>::new(),
+            iterable_item_removed: Vec::<serde_json::Value>::new(),
+        };
 
         if !order {
-            let init_result: Result = Result {
-                dictionary_item_removed: Vec::<serde_json::Value>::new(),
-                dictionary_item_added: Vec::<serde_json::Value>::new(),
-                value_changed: Vec::<serde_json::Value>::new(),
-                iterable_item_added: Vec::<serde_json::Value>::new(),
-                iterable_item_removed: Vec::<serde_json::Value>::new(),
-            };
             let result = deep_diffi(a_json, b_json, "root[".to_string(), &init_result);
             result
         }
         else {
-            // deep_diffi_order(a_json, b_json, "root[".to_string());
-            let init_result: Result = Result {
-                dictionary_item_removed: Vec::<serde_json::Value>::new(),
-                dictionary_item_added: Vec::<serde_json::Value>::new(),
-                value_changed: Vec::<serde_json::Value>::new(),
-                iterable_item_added: Vec::<serde_json::Value>::new(),
-                iterable_item_removed: Vec::<serde_json::Value>::new(),
-            };
-            init_result
+            let result = deep_diffi_order(a_json, b_json, "root[".to_string(), &init_result);
+            result
         }
         
     }
@@ -126,65 +120,60 @@ pub mod mod_deep_diffi {
 
     }
 
-    // fn deep_diffi_order(a_json: serde_json::Value, b_json: serde_json::Value, _init_location: String) {
-    //     let json1: &serde_json::Map<String, serde_json::Value> = a_json.as_object().unwrap();
-    //     let json2: &serde_json::Map<String, serde_json::Value> = b_json.as_object().unwrap();
-    //     let mut _location: String;
+    fn deep_diffi_order(a_json: serde_json::Value, b_json: serde_json::Value, _init_location: String, init_result: &Result) -> Result {
+        let json1: &serde_json::Map<String, serde_json::Value> = a_json.as_object().unwrap();
+        let json2: &serde_json::Map<String, serde_json::Value> = b_json.as_object().unwrap();
+        let mut _location: String;
+        let mut sub_result: Result = init_result.to_owned();
+        for (json1_i, (json1_key, _json1_value)) in json1.iter().enumerate() {
+            _location = _init_location.to_owned() + &json1_key + "]";
+            let json2_key = json2.iter().nth(json1_i);
 
-    //     for (json1_i, (json1_key, _json1_value)) in json1.iter().enumerate() {
-    //         _location = _init_location.to_owned() + &json1_key + "]";
-    //         let json2_key = json2.iter().nth(json1_i);
-
-    //         if json2_key.is_some() {
-    //             if json1_key == json2_key.unwrap().0 {
-    //                 if !_json1_value.is_object() && !_json1_value.is_array(){
-    //                     if _json1_value != json2_key.unwrap().1 {
-    //                         let val = _json1_value.to_owned();
-    //                         let formatted = json!({"location": _location, "value": val});
-    //                         // unsafe {
-    //                             VALUE_CHANGED_ARRAY.push(formatted);
-    //                         // }
-    //                     }
-    //                 }
-    //                 else if _json1_value.is_object() {
-    //                     let json3 = _json1_value;
-    //                     let json4 = json2[json1_key].as_object().unwrap();
-    //                     deep_diffi_order(json!(json3), json!(json4), String::from(&_location) + "[");
-    //                 }
-    //                 else if _json1_value.is_array() {
-    //                     if json2[json1_key].is_array() {
-    //                         for (json1_array_val_i, json1_array_val) in _json1_value.as_array().unwrap().iter().enumerate() {
-    //                             let json4_key = &json2[json1_key][json1_array_val_i];
+            if json2_key.is_some() {
+                if json1_key == json2_key.unwrap().0 {
+                    if !_json1_value.is_object() && !_json1_value.is_array(){
+                        if _json1_value != json2_key.unwrap().1 {
+                            let val = _json1_value.to_owned();
+                            let formatted = json!({"location": _location, "value": val});
+                            sub_result.value_changed.push(formatted);
+                        }
+                    }
+                    else if _json1_value.is_object() {
+                        let json3 = _json1_value;
+                        let json4 = json2[json1_key].as_object().unwrap();
+                        sub_result = deep_diffi_order(json!(json3), json!(json4), String::from(&_location) + "[", &sub_result);
+                    }
+                    else if _json1_value.is_array() {
+                        if json2[json1_key].is_array() {
+                            for (json1_array_val_i, json1_array_val) in _json1_value.as_array().unwrap().iter().enumerate() {
+                                let json4_key = &json2[json1_key][json1_array_val_i];
                                 
-    //                             if json1_array_val.is_object() {
-    //                                 let j1i = _json1_value.as_array().unwrap().iter().position(|x| x == json1_array_val).unwrap();
-    //                                 let location1 = String::from(&_location) + "[" + &j1i.to_string() + "][";
-    //                                 let arr_1 = json1_array_val;
-    //                                 deep_diffi_order(json!(&arr_1), json!(&json2[json1_key][j1i]), location1.to_string());
-    //                             }
-    //                             else {
-    //                                 if json1_array_val != json4_key {
-    //                                     let j1i = _json1_value.as_array().unwrap().iter().position(|x| x == json1_array_val).unwrap();
-    //                                     let location1 = String::from(&_location) + "[" + &j1i.to_string() + "]";
-    //                                     let val = json1_array_val.to_owned();
-    //                                     let formatted = json!({"location": location1, "value": val});
-    //                                     // unsafe {
-    //                                         VALUE_CHANGED_ARRAY.push(formatted);
-    //                                     // }
-    //                                 }
-    //                             }
-    //                         }
-    //                     }
-    //                 }
-    //             }
-    //         }
-    //         else {
-    //             println!("===> Order Compromised!");
-    //             // unsafe {
-    //                 VALUE_CHANGED_ARRAY.clear();
-    //             // }
-    //             deep_diffi(json!(a_json), json!(b_json), "root[".to_string());
-    //         }
-    //     }
-    // }
+                                if json1_array_val.is_object() {
+                                    let j1i = _json1_value.as_array().unwrap().iter().position(|x| x == json1_array_val).unwrap();
+                                    let location1 = String::from(&_location) + "[" + &j1i.to_string() + "][";
+                                    let arr_1 = json1_array_val;
+                                    sub_result = deep_diffi_order(json!(&arr_1), json!(&json2[json1_key][j1i]), location1.to_string(), &sub_result);
+                                }
+                                else {
+                                    if json1_array_val != json4_key {
+                                        let j1i = _json1_value.as_array().unwrap().iter().position(|x| x == json1_array_val).unwrap();
+                                        let location1 = String::from(&_location) + "[" + &j1i.to_string() + "]";
+                                        let val = json1_array_val.to_owned();
+                                        let formatted = json!({"location": location1, "value": val});
+                                        sub_result.value_changed.push(formatted);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            else {
+                println!("===> Order Compromised!");
+                sub_result.value_changed.clear();
+                sub_result = deep_diffi(json!(a_json), json!(b_json), "root[".to_string(), &sub_result);
+            }
+        }
+        sub_result
+    }
 }
