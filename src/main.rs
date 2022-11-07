@@ -52,7 +52,8 @@ fn main() {
         "key5": "value_2",
     });
 
-    let o = josn_diffi(a_json, b_json, false);
-    println!("===> {:#?}", o);
+    let ign: Vec<&str> = ["key2", "key4.keyj4"].to_vec();
+    let o = josn_diffi(a_json, b_json, false, ign);
+    // println!("===> {:#?}", o);
 
 }
