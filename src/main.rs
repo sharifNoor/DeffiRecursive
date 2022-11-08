@@ -16,16 +16,26 @@ fn main() {
         },
         "key4": [
             {
-                "keyj4": "valuej_222",
+                "keyj4": {
+                    "keyj45": "valuej_2",
+                    "keyj462": "valuej_2222222",
+                },
                 "keyj5": "valuej_2",
-            },
+                "keyj62": "valuej_22",
+            }, 
             {
                 "keyj42": "valuej_22",
                 "keyj52": "valuej_22",
-                "keyj62": "valuej_22",
             }
         ],
-        "key5": "value_1",
+        "key5": {
+            "key8": "value_4",
+            "key9": [
+                "value_3",
+                "value_5",
+                "value_6",
+            ],
+        },
     });
 
     let b_json = json!({
@@ -40,7 +50,10 @@ fn main() {
         },
         "key4": [
             {
-                "keyj4": "valuej_2",
+                "keyj4": {
+                    "keyj45": "valuej_2222",
+                    "keyj462": "valuej_22",
+                },
                 "keyj5": "valuej_2",
                 "keyj62": "valuej_22",
             }, 
@@ -49,11 +62,18 @@ fn main() {
                 "keyj52": "valuej_22",
             }
         ],
-        "key5": "value_2",
+        "key5": {
+            "key8": "value_4",
+            "key9": [
+                "value_3",
+                "value_5",
+                "value_6",
+            ],
+        },
     });
 
-    let ign: Vec<&str> = ["key2", "key4.keyj4"].to_vec();
+    let ign: Vec<&str> = ["key2", "key4.keyj4.keyj462"].to_vec();
     let o = josn_diffi(a_json, b_json, false, ign);
-    // println!("===> {:#?}", o);
+    println!("===> {:#?}", o);
 
 }
