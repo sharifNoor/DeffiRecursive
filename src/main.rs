@@ -22,7 +22,7 @@ fn main() {
                 },
                 "keyj5": "valuej_2",
                 "keyj62": "valuej_22",
-            }, 
+            },
             {
                 "keyj42": "valuej_22",
                 "keyj52": "valuej_22",
@@ -56,7 +56,7 @@ fn main() {
                 },
                 "keyj5": "valuej_2",
                 "keyj62": "valuej_22",
-            }, 
+            },
             {
                 "keyj42": "valuej_22",
                 "keyj52": "valuej_22",
@@ -75,5 +75,4 @@ fn main() {
     let ign: Vec<&str> = ["key2", "key4.keyj4.keyj462"].to_vec();
     let o = josn_diffi(a_json, b_json, false, ign);
     println!("===> {:#?}", o);
-
 }

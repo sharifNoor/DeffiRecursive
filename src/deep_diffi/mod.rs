@@ -77,7 +77,6 @@ pub mod mod_deep_diffi {
                 ig.push(&chk_ignore.1);
             }
             if !chk_ignore.0 {
-                // println!("{} --> {:?}", &json1_key, ig);
                 if !json2.contains_key(json1_key) {
                     // dictionary_item_removed
                     let val = _json1_value.to_owned();
@@ -139,7 +138,6 @@ pub mod mod_deep_diffi {
                 ig.push(&chk_ignore.1);
             }
             if !chk_ignore.0 {
-                // println!("{} --> {:?}", &json2_key, ig);
                 if !json1.contains_key(json2_key) {
                     // dictionary_item_added
                     let val = _json2_value.to_owned();
@@ -148,8 +146,6 @@ pub mod mod_deep_diffi {
                 }
             }
         }
-        // println!("{:#?}", sub_result);
-
         sub_result
     }
 
@@ -166,7 +162,6 @@ pub mod mod_deep_diffi {
                 ig.push(&chk_ignore.1);
             }
             if !chk_ignore.0 {
-                // println!("{} --> {:?}", &json1_key, ig);
                 let json2_key = json2.iter().nth(json1_i);
 
                 if json2_key.is_some() {
